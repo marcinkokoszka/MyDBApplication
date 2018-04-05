@@ -1,6 +1,7 @@
 package pl.mkokoszka.mydbapplication.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -21,5 +22,6 @@ public class Person implements Serializable {
     private String surname;
     private Date birthDate;
     private Address address;
-    private List<Book> books;
+    @Builder.Default
+    private List<Book> books = new ArrayList<>();
 }

@@ -1,9 +1,11 @@
 package pl.mkokoszka.mydbapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.facebook.stetho.Stetho;
 import com.github.javafaker.Faker;
@@ -13,6 +15,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler);
+        ButterKnife.bind(this);
 
         initialisePersonRepository();
         initialiseRealm();
@@ -47,24 +52,9 @@ public class MainActivity extends AppCompatActivity {
 //        prepareSampleData();
     }
 
-    private void prepareSampleData() {
-        for(int i = 0; i < 15; i++) {
-            personRepository.saveOrUpdate(prepareSamplePerson());
-        }
-    }
-
     private void initialisePersonRepository() {
         MyDBApplicationComponent component = DaggerMyDBApplicationComponent.create();
         personRepository = component.getRealmPersonRepository();
-    }
-
-    private void initialiseRecyclerView() {
-        mRecyclerView = findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyAdapter(personRepository.findAll());
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initialiseRealm() {
@@ -83,6 +73,21 @@ public class MainActivity extends AppCompatActivity {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+    }
+
+    private void initialiseRecyclerView() {
+        mRecyclerView = findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new PersonAdapter(personRepository.findAll());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void prepareSampleData() {
+        for(int i = 0; i < 15; i++) {
+            personRepository.saveOrUpdate(prepareSamplePerson());
+        }
     }
 
     private Person prepareSamplePerson() {
@@ -125,5 +130,18 @@ public class MainActivity extends AppCompatActivity {
         books.forEach(book -> book.deleteFromRealm());
         realm.commitTransaction();
         realm.close();
+    }
+
+    @OnClick(R.id.btnAdd)
+    public void addPerson(View view) {
+        Intent intent = new Intent(view.getContext() , PersonDetailsActivity.class);
+        view.getContext().startActivity(intent);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        initialiseRecyclerView();
     }
 }

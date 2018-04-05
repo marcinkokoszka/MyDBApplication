@@ -18,7 +18,7 @@ public class PersonEntity extends RealmObject {
     private String surname;
     private Date birthDate;
     private AddressEntity addressEntity;
-    private RealmList<BookEntity> bookEntities;
+    private RealmList<BookEntity> bookEntities = new RealmList<>();
 
     public String getPesel() {
         return pesel;

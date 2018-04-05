@@ -3,4 +3,14 @@
     <string name="personal_details">Dane osobowe</string>
     <string name="name">Imię</string>
     <string name="edit">Edytuj</string>
+    <string name="surname">Nazwisko</string>
+    <string name="pesel">PESEL</string>
+    <string name="birthDate">Data urodzenia</string>
+    <string name="save">Zapisz</string>
+    <string name="delete">Usuń</string>
+    <string name="country">Państwo</string>
+    <string name="city">Miasto</string>
+    <string name="street">Ulica</string>
+    <string name="postalCode">Kod pocztowy</string>
+    <string name="add">Dodaj</string>
 </resources>
